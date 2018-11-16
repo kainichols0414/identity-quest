@@ -1,5 +1,166 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Hello, Fellow Gays!</h1>
+<style>
+    #myInput {
+        background-image: url('/static/img/searchicon.png'); /* Add a search icon to input */
+        background-position: 10px 12px; /* Position the search icon */
+        background-repeat: no-repeat; /* Do not repeat the icon image */
+        width: 100%; /* Full-width */
+        font-size: 16px; /* Increase font-size */
+        padding: 12px 20px 12px 40px; /* Add some padding */
+        border: 1px solid #ddd; /* Add a grey border */
+        margin-bottom: 12px; /* Add some space below the input */
+    }
+
+    #myTable {
+        border-collapse: collapse; /* Collapse borders */
+        width: 100%; /* Full-width */
+        border: 1px solid #ddd; /* Add a grey border */
+        font-size: 18px; /* Increase font-size */
+    }
+
+    #myTable th, #myTable td {
+        text-align: left; /* Left-align text */
+        padding: 12px; /* Add padding */
+    }
+
+    #myTable tr {
+        /* Add a bottom border to all table rows */
+        border-bottom: 1px solid #ddd; 
+    }
+
+    #myTable tr.header, #myTable tr:hover {
+        /* Add a grey background color to the table header and on hover */
+        background-color: #f1f1f1;
+    }
+
+</style>
+<body>
+    <center>
+        <div id="box">  
+            <h3>LGBTQ+ Definition</h3>    
+        </div>
+
+        <div id="grid">
+                <div> 
+                    Ally
+                </div>
+                <div>
+                    Questioning
+                </div>
+                <div>
+                    Educator 
+                </div>
+        </div>
+        <div id="box">
+            <h3>Search</h3>
+            <input type="text" id="myInput" onkeyup="searchFunction()" placeholder="Search for names..">
+            <button id="filter" onclick="filterFunction()">Filter</button>
+            <button id="reset" onclick="resetFunction()">Reset</button>
+            <table id = "myTable" cellpadding = "3" cellspacing = "3" border = "1">
+                <thead>
+                    <tr class="header">
+                        <th style="width:75%;">Organization</th>
+                        <th style="width:25%;">Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+                function filterFunction(){
+                    // Declare variables 
+                    var input, filter, table, tr, td, i;
+                    input = document.getElementById("myInput");
+                    table = document.getElementById("myTable");
+                    filter = "hotline"
+                    tr = table.getElementsByTagName("tr");
+                    orgTags = {
+                        "The Montrose Center": ["social", "food", "counseling", "addiction", "sti testing"],
+                        "Gay & Lesbian Switchboard Houston": ["housing", "food", "hotline", "domestic violence"],
+                        "United Way Help Line": ["social", "food", "counseling", "addiction", "sti testing"]
+                    }
+        
+                    // Loop through all table rows, and hide those who don't match the search query
+                    for (i = 0; i < tr.length; i++) {
+                        td = tr[i].getElementsByTagName("td")[0];
+                        if (td) {
+                            console.log(td.textContent)
+                            tags=orgTags[td.textContent];
+                            if (td) {
+                                if (tags.indexOf(filter) > -1) {
+                                    tr[i].style.display = "";
+                                } else {
+                                    tr[i].style.display = "none";
+                                }
+                            }
+                        } 
+                    }
+                }
+                function resetFunction(){
+                    // Declare variables 
+                    var input, filter, table, tr, td, i;
+                    input = document.getElementById("myInput");
+                    table = document.getElementById("myTable");
+                    tr = table.getElementsByTagName("tr");
+        
+                    // Loop through all table rows, and hide those who don't match the search query
+                    for (i = 0; i < tr.length; i++) {
+                        td = tr[i].getElementsByTagName("td")[0];
+                        if (td) {
+                            if (td) {
+                                tr[i].style.display = "";
+                            }
+                        } 
+                    }
+                }
+                function searchFunction() {
+                    // Declare variables 
+                    var input, filter, table, tr, td, i;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    table = document.getElementById("myTable");
+                    tr = table.getElementsByTagName("tr");
+        
+                    // Loop through all table rows, and hide those who don't match the search query
+                    for (i = 0; i < tr.length; i++) {
+                        td = tr[i].getElementsByTagName("td")[0];
+                        if (td) {
+                            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                                tr[i].style.display = "";
+                            } else {
+                                tr[i].style.display = "none";
+                            }
+                        } 
+                    }
+                }
+            </script>
+            <script type = "text/javascript">			
+                window.onload = function() {
+                    var name = ["The Montrose Center", "Gay & Lesbian Switchboard Houston", "United Way Help Line"];
+                    var type = ["Social Services", "Hotline", "Hotline"];
+                    var link = ["http://www.montrosecenter.org/hub/", "http://www.montrosecenter.org/hub/services/avp/switchboard/", "https://www.unitedwayhouston.org/our-211-helpline"];
+                    var table = document.getElementById("myTable").getElementsByTagName("tbody")[0];
+                    for(var i = 0; i < name.length; i++) {
+                        var newTr = table.insertRow(-1);
+                        if(link[i].length!=0){
+                            var orgLink = document.createElement('a');
+                            var href=link[i];
+                            orgLink.href = href;
+                            orgLink.innerHTML = name[i];
+                            newTr.insertCell(-1).appendChild(orgLink);
+                        }
+                        else{
+                            newTr.insertCell(-1).appendChild(document.createTextNode(name[i]));
+                        }
+                        newTr.insertCell(-1).appendChild(document.createTextNode(type[i]));
+                    }
+                }
+            </script>
+
+    </center>
+</body>
 {% endblock %}
