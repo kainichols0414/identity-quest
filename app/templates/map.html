@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <title>Simple Markers</title>
+{% extends "base.html" %}
+
+{% block content %}
+    <title>Map</title>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -16,12 +14,28 @@
         margin: 0;
         padding: 0;
       }
+      #grid2 {
+        display: grid;
+        height: 450px;
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: 450px;
+        column-gap: 20px;
+      }
+      
+      #grid2 > div {
+        background-color:#f1f1f1;
+        border: 10px solid #f1f1f1;
+      }
     </style>
-  </head>
   <body>
-    <div id="map"></div>
-    <script>
-
+    <br>
+    <center>
+    <div id="grid2">
+        <div id="map"></div>
+    </div>
+  </center>
+  </body>
+  <script>
       function initMap() {
         var myLatLng = {lat: 29.7604, lng: -95.3698};
 
@@ -29,16 +43,22 @@
           zoom: 11,
           center: myLatLng
         });
-
-        var marker = new google.maps.Marker({
-          position: {lat: {{location.lat}}, lng: {{location.lon}}},
-          map: map,
-          title: "Montrose Center"
-        });
+        markers=[]
+        var name={{data.name | tojson}};
+        var lat={{data.lat | tojson}};
+        console.log(lat[0])
+        var lon={{data.lon | tojson}};
+        for(var i=0; i< name.length;i++){
+          var marker = new google.maps.Marker({
+            position: {lat: lat[i], lng: lon[i]},
+            map: map,
+            title: name[i]
+          });
+          markers.push(marker)
+        }
       }
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdo-0BwpU-DOU8JfbXD_Coen5QG2vfSSM&callback=initMap">
     </script>
-  </body>
-</html>
+{% endblock %}
