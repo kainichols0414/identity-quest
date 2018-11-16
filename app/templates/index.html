@@ -34,6 +34,9 @@
         /* Add a grey background color to the table header and on hover */
         background-color: #f1f1f1;
     }
+    label {
+        display: inline-block;
+    }
 
 </style>
 <body>
@@ -56,6 +59,39 @@
         <div id="box">
             <h3>Search</h3>
             <input type="text" id="myInput" onkeyup="searchFunction()" placeholder="Search for names..">
+            <br>
+            <label><input type="checkbox" id="hotline"> hotline</label>
+            <label><input type="checkbox" id="addiction"> addiction</label>
+            <label><input type="checkbox" id="crisis intervention"> crisis intervention</label>
+            <label><input type="checkbox" id="domestic violence"> domestic violence</label>
+            <label><input type="checkbox" id="assault"> assault</label>
+            <label><input type="checkbox" id="housing"> housing</label>
+            <label><input type="checkbox" id="food"> food</label>
+            <label><input type="checkbox" id="sti testing"> STI testing</label>
+            <label><input type="checkbox" id="ob/gyn services"> OB/GYN services</label>
+            <label> <input type="checkbox" id="counseling"> counseling</label>
+            <label><input type="checkbox" id="shower/hygeine"> shower/hygeine</label>
+            <label><input type="checkbox" id="laundry"> laundry</label>
+            <label><input type="checkbox" id="hiv resources"> HIV resources</label>
+            <label><input type="checkbox" id="condoms"> condoms</label>
+            <label><input type="checkbox" id="laundry"> laundry</label>
+            <label><input type="checkbox" id="jobs/job skills"> jobs/job skills</label>
+            <label><input type="checkbox" id="trauma"> trauma</label>
+            <label><input type="checkbox" id="medical services"> medical services</label>
+            <label><input type="checkbox" id="foster care"> foster care</label>
+            <label><input type="checkbox" id="legal services"> legal services</label>
+            <label> <input type="checkbox" id="disability advocacy"> disability advocacy</label>
+            <label><input type="checkbox" id="clothing"> clothing</label>
+            <label><input type="checkbox" id="gender services"> gender services</label>
+            <label> <input type="checkbox" id="support"> support</label>
+            <label><input type="checkbox" id="veterans"> veterans</label>
+            <label><input type="checkbox" id="social"> social</label>
+            <label><input type="checkbox" id="cost effective"> cost effective</label>
+            <label><input type="checkbox" id="case management"> case management</label>
+            <label><input type="checkbox" id="vaccination"> vaccination</label>
+            <label><input type="checkbox" id="gender services"> gender services</label>
+
+            <br>
             <button id="filter" onclick="filterFunction()">Filter</button>
             <button id="reset" onclick="resetFunction()">Reset</button>
             <table id = "myTable" cellpadding = "3" cellspacing = "3" border = "1">
@@ -76,25 +112,37 @@
                     var input, filter, table, tr, td, i;
                     input = document.getElementById("myInput");
                     table = document.getElementById("myTable");
-                    filter = "hotline"
-                    tr = table.getElementsByTagName("tr");
-                    orgTags = {
-                        "The Montrose Center": ["social", "food", "counseling", "addiction", "sti testing"],
-                        "Gay & Lesbian Switchboard Houston": ["housing", "food", "hotline", "domestic violence"],
-                        "United Way Help Line": ["social", "food", "counseling", "addiction", "sti testing"]
+                    filters = ["gender services","vaccination","case management","cost effective","social","veterans","support","gender services","clothing","disability advocacy","legal services","foster care","medical services","trauma","jobs/job skills","laundry","condoms","hiv resources","shower/hygeine","counseling","ob/gyn services","sti testing","food","housing","assault","domestic violence","crisis intervention","addiction","hotline"];
+                    new_filters=[];
+                    for (j = 0; j < filters.length; j++){
+                        var checkBox = document.getElementById(filters[j]);
+                        if (checkBox.checked == true){
+                            new_filters.push(filters[j]);
+                        }
                     }
+                    filters=new_filters;
+                    console.log(filters);
+                    tr = table.getElementsByTagName("tr");
+                    
+                    var orgTags = {};
+                    var orgs = {{resources.name | tojson}};
+                    var tags = {{resources.tags | tojson}}
+                    for (i = 0; i < orgs.length; i++){
+                        orgTags[orgs[i]]=tags[i]
+                    }
+                    console.log(orgTags);
+
         
                     // Loop through all table rows, and hide those who don't match the search query
                     for (i = 0; i < tr.length; i++) {
                         td = tr[i].getElementsByTagName("td")[0];
                         if (td) {
-                            console.log(td.textContent)
                             tags=orgTags[td.textContent];
-                            if (td) {
-                                if (tags.indexOf(filter) > -1) {
-                                    tr[i].style.display = "";
-                                } else {
-                                    tr[i].style.display = "none";
+                            for (j = 0; j < filters.length; j++){
+                                if (td) {
+                                    if (tags.indexOf(filters[j]) <= -1) {
+                                        tr[i].style.display = "none";
+                                    }
                                 }
                             }
                         } 
@@ -140,9 +188,9 @@
             </script>
             <script type = "text/javascript">			
                 window.onload = function() {
-                    var name = ["The Montrose Center", "Gay & Lesbian Switchboard Houston", "United Way Help Line"];
-                    var type = ["Social Services", "Hotline", "Hotline"];
-                    var link = ["http://www.montrosecenter.org/hub/", "http://www.montrosecenter.org/hub/services/avp/switchboard/", "https://www.unitedwayhouston.org/our-211-helpline"];
+                    var name = {{resources.name | tojson}};
+                    var type = {{resources.type | tojson}};
+                    var link = {{resources.link | tojson}};
                     var table = document.getElementById("myTable").getElementsByTagName("tbody")[0];
                     for(var i = 0; i < name.length; i++) {
                         var newTr = table.insertRow(-1);
