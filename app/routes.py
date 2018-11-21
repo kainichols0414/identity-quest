@@ -19,22 +19,35 @@ def index():
         service_type.append(row['Service Type'])
         link.append(row['Website'])
         tags.append([i.lower() for i in row['Filter Tags'].split(", ")])
-    resources={'address':address,'name':name,'tags':tags,'type':service_type,'link':link}
+    resources={'name':name,'tags':tags,'type':service_type,'link':link}
     return render_template('index.html', resources=resources,title='Home')
+
 
 @app.route('/map')
 def map():
-    
-    address='401 Branard Street'
-    geolocator = Nominatim(user_agent="Identity Quest")
-    location = geolocator.geocode(address)
-    location = {'name':"Montrose Center",'lon':location.longitude,'lat':location.latitude}
-    return render_template('map.html',location=location, title='Map')
+    df=pd.read_excel('/Users/Me/Documents/identity-quest/app/static/Identity-Quest-Demo-Resources.xlsx')
+    lon=[]
+    lat=[]
+    name=[]
+    for index,row in df.iterrows():
+        if(row['Lon']==row['Lon']):
+            lon.append(row['Lon'])
+            lat.append(row['Lat'])
+            name.append(str(row['Organization Name']))
+    return render_template('map.html',data={'name':name,'lon':lon,'lat':lat}, title='Map')
+
+@app.route('/q')
+def questioning():
+    return render_template('questioning.html', title='Questioning')
+
+@app.route('/gi')
+def gi():
+    return render_template('genderidentity.html', title='Gender Identity')
+
+@app.route('/s')
+def s():
+    return render_template('sexuality.html', title='Sexuality')
 
 @app.route('/static/<path:path>')
 def download_file(filename):
     return send_from_directory('static',filename)
-
-@app.route('/faq')
-def faq():
-    return render_template('index.html', title='Home')

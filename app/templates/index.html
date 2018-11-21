@@ -3,9 +3,6 @@
 {% block content %}
 <style>
     #myInput {
-        background-image: url('/static/img/searchicon.png'); /* Add a search icon to input */
-        background-position: 10px 12px; /* Position the search icon */
-        background-repeat: no-repeat; /* Do not repeat the icon image */
         width: 100%; /* Full-width */
         font-size: 16px; /* Increase font-size */
         padding: 12px 20px 12px 40px; /* Add some padding */
@@ -42,23 +39,23 @@
 <body>
     <center>
         <div id="box">  
-            <h3>LGBTQ+ Definition</h3>    
+            <h3>LGBT+ Lesbian, Gay, Bisexual, and Transgender</h3>    
         </div>
 
         <div id="grid">
-                <div> 
-                    Ally
+                <div>
+                    <a href="/">Ally</a>
                 </div>
                 <div>
-                    Questioning
+                    <a href="/q">Questioning</a>
                 </div>
                 <div>
-                    Educator 
+                    <a href="/">Educator</a>
                 </div>
         </div>
         <div id="box">
             <h3>Search</h3>
-            <input type="text" id="myInput" onkeyup="searchFunction()" placeholder="Search for names..">
+            <input type="text" id="myInput" onkeyup="searchFunction()" placeholder="Search for organization name..">
             <br>
             <label><input type="checkbox" id="hotline"> hotline</label>
             <label><input type="checkbox" id="addiction"> addiction</label>
@@ -74,7 +71,6 @@
             <label><input type="checkbox" id="laundry"> laundry</label>
             <label><input type="checkbox" id="hiv resources"> HIV resources</label>
             <label><input type="checkbox" id="condoms"> condoms</label>
-            <label><input type="checkbox" id="laundry"> laundry</label>
             <label><input type="checkbox" id="jobs/job skills"> jobs/job skills</label>
             <label><input type="checkbox" id="trauma"> trauma</label>
             <label><input type="checkbox" id="medical services"> medical services</label>
@@ -83,13 +79,12 @@
             <label> <input type="checkbox" id="disability advocacy"> disability advocacy</label>
             <label><input type="checkbox" id="clothing"> clothing</label>
             <label><input type="checkbox" id="gender services"> gender services</label>
-            <label> <input type="checkbox" id="support"> support</label>
+            <label><input type="checkbox" id="support"> support</label>
             <label><input type="checkbox" id="veterans"> veterans</label>
             <label><input type="checkbox" id="social"> social</label>
             <label><input type="checkbox" id="cost effective"> cost effective</label>
             <label><input type="checkbox" id="case management"> case management</label>
             <label><input type="checkbox" id="vaccination"> vaccination</label>
-            <label><input type="checkbox" id="gender services"> gender services</label>
 
             <br>
             <button id="filter" onclick="filterFunction()">Filter</button>
@@ -108,15 +103,19 @@
 
         <script>
                 function filterFunction(){
+                    resetFunction()
                     // Declare variables 
                     var input, filter, table, tr, td, i;
                     input = document.getElementById("myInput");
                     table = document.getElementById("myTable");
-                    filters = ["gender services","vaccination","case management","cost effective","social","veterans","support","gender services","clothing","disability advocacy","legal services","foster care","medical services","trauma","jobs/job skills","laundry","condoms","hiv resources","shower/hygeine","counseling","ob/gyn services","sti testing","food","housing","assault","domestic violence","crisis intervention","addiction","hotline"];
+                    filters = ["vaccination","gender services","case management","cost effective","social","veterans","support","clothing","disability advocacy","legal services","foster care","medical services","trauma","jobs/job skills","laundry","condoms","hiv resources","shower/hygeine","counseling","ob/gyn services","sti testing","food","housing","assault","domestic violence","crisis intervention","addiction","hotline"];
                     new_filters=[];
                     for (j = 0; j < filters.length; j++){
                         var checkBox = document.getElementById(filters[j]);
+                        console.log(filters[j])
+                        console.log(checkBox.checked)
                         if (checkBox.checked == true){
+                            console.log(filters[j])
                             new_filters.push(filters[j]);
                         }
                     }
@@ -126,9 +125,9 @@
                     
                     var orgTags = {};
                     var orgs = {{resources.name | tojson}};
-                    var tags = {{resources.tags | tojson}}
+                    var tags = {{resources.tags | tojson}};
                     for (i = 0; i < orgs.length; i++){
-                        orgTags[orgs[i]]=tags[i]
+                        orgTags[orgs[i]]=tags[i];
                     }
                     console.log(orgTags);
 
